@@ -433,9 +433,10 @@ function startWorker()
     worker = new Worker(window.URL.createObjectURL(blob));
     worker.onmessage = ({data:output})=> {
         console.log('Message received from worker',  output);
-        const numberOfScavanges = availableScavanges().length;
+        const numberOfScavanges = output.otherStuff[1].length;
+        console.log(numberOfScavanges);
         const optimizatedArray = [0.577, 0.231, 0.115, 0.077]
-        for (i; i < optimizatedArray - numberOfScavanges; i++) {
+        for (let i = 0; i < optimizatedArray - numberOfScavanges; i++) {
             optimizatedArray.pop();
         }
         optimization_callBack(optimizatedArray, ...output.otherStuff)
@@ -479,7 +480,7 @@ function optimization_callBack(optimization, units, availableScavanges)
     var unitsToUse = {...units};
     myconsolelog("optimization haul");
     myconsolelog(optimization[0]);
-    myconsolelog("optimization factors");
+    myconsolelog("optimization factors renovados");
     myconsolelog(optimization);
     myconsolelog(optimization[1]);
     var leftest_optimal = optimization[1].pop();
