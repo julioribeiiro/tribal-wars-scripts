@@ -431,6 +431,7 @@ function startWorker()
 
     // Note: window.webkitURL.createObjectURL() in Chrome 10+.
     worker = new Worker(window.URL.createObjectURL(blob));
+
     worker.onmessage = ({data:output})=> {
         console.log('Message received from worker',  output);
         const numberOfScavanges = output.otherStuff[1].length;
@@ -440,8 +441,13 @@ function startWorker()
             optimizatedArray.pop();
         }
 
-        optimization_callBack({result: [output.result[0], optimizatedArray], ...output.otherStuff}, ...output.otherStuff)
+        optimization_callBack([output.result[0], optimizatedArray], ...output.otherStuff);
     };
+
+    // worker.onmessage = ({data:output})=> {
+    //     console.log('Message received from worker',  output);
+    //     optimization_callBack(output.result, ...output.otherStuff)
+    // };
 }
 
 function get_optimal_factors(units, availableScavanges)
@@ -481,14 +487,30 @@ function optimization_callBack(optimization, units, availableScavanges)
     var unitsToUse = {...units};
     myconsolelog("optimization haul");
     myconsolelog(optimization[0]);
-    myconsolelog("optimization factors renovados");
+    myconsolelog("optimization factors");
     myconsolelog(optimization);
     myconsolelog(optimization[1]);
     var leftest_optimal = optimization[1].pop();
     myconsolelog("leftest_optimal");    
     myconsolelog(leftest_optimal);
 
-    $.each(units, function(key, val){units[key] = parseInt(leftest_optimal*val)})
+    const optimizatedArray = [0.577, 0.231, 0.115, 0.077]
+    $.each(units, function(key, val) {
+        switch (optimization[1].length + 1) {
+            case 4:
+                units[key] = parseInt(leftest_optimal*val);
+                break;
+            case 3:
+                units[key] = parseInt(leftest_optimal*(val / (1-0.077)));
+                break;
+            case 2:
+                units[key] = parseInt(leftest_optimal*(val / (1-0.077-0.115)));
+                break;
+            case 1:
+                units[key] = parseInt(val);
+        }
+        
+    })
     var predHaul =lootFactors[scavangeType] * calculateHaul(units);
 
     var time = hours * 3600;
