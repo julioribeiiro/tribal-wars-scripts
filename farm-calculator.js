@@ -494,20 +494,30 @@ function optimization_callBack(optimization, units, availableScavanges)
     myconsolelog("leftest_optimal");    
     myconsolelog(leftest_optimal);
 
+    const numberOfScavanges = getAvailableScavanges().length;
+    console.log("numberOfScavanges: " + numberOfScavanges);
+
     const optimizatedArray = [0.577, 0.231, 0.115, 0.077]
     $.each(units, function(key, val) {
-        switch (optimization[1].length + 1) {
+        console.log("val: ", val);
+        console.log("numberOfScavanges: ", numberOfScavanges);
+        switch (numberOfScavanges) {
             case 4:
-                units[key] = parseInt(leftest_optimal*val);
+                console.log('4 disponiveis')
+                units[key] = parseInt(optimizatedArray[numberOfScavanges - 1]*val);
                 break;
             case 3:
-                units[key] = parseInt(leftest_optimal*(val / (1-0.077)));
+                console.log('3 disponiveis')
+                units[key] = parseInt(optimizatedArray[numberOfScavanges - 1]*(val / (1-0.077)));
                 break;
             case 2:
-                units[key] = parseInt(leftest_optimal*(val / (1-0.077-0.115)));
+                console.log('2 disponiveis')
+                units[key] = parseInt(optimizatedArray[numberOfScavanges - 1]*(val / (1-0.077-0.115)));
                 break;
             case 1:
+                console.log('1 disponiveis')
                 units[key] = parseInt(val);
+                break;
         }
         
     })
