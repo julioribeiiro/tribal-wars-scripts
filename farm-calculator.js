@@ -433,7 +433,12 @@ function startWorker()
     worker = new Worker(window.URL.createObjectURL(blob));
     worker.onmessage = ({data:output})=> {
         console.log('Message received from worker',  output);
-        optimization_callBack(output.result, ...output.otherStuff)
+        const numberOfScavanges = availableScavanges().length;
+        const optimizatedArray = [0.577, 0.231, 0.115, 0.077]
+        for (i; i < optimizatedArray - numberOfScavanges; i++) {
+            optimizatedArray.pop();
+        }
+        optimization_callBack(optimizatedArray, ...output.otherStuff)
     };
 }
 
