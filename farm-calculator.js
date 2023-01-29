@@ -439,7 +439,8 @@ function startWorker()
         for (let i = 0; i < optimizatedArray - numberOfScavanges; i++) {
             optimizatedArray.pop();
         }
-        optimization_callBack(optimizatedArray, ...output.otherStuff)
+
+        optimization_callBack({result: [output.result[0], optimizatedArray], ...output.otherStuff}, ...output.otherStuff)
     };
 }
 
